@@ -22,13 +22,12 @@ done
 
 shift $(($OPTIND - 1))
 
-echo "@: $1";
-image=$1
 if [[ $# < 1 ]]; then
 	echo "USAGE: $0 [-o OUTPUT_DIR] image"
 	exit 1
 fi
 
+image=$1
 echo "Converting $image (output directory: $output_dir)"
 
 # Check if output_dir is a directory
