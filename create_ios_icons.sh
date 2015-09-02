@@ -3,9 +3,12 @@
 # Create 3 copies of the given image with 32px, 64px, 96px size
 #
 
-size_base=32
-size_big=64
-size_huge=96
+TAB_SIZE_BASE=32
+TAB_SIZE_BIG=64
+TAB_SIZE_HUGE=96
+BAR_SIZE_BASE=32
+BAR_SIZE_BIG=64
+BAR_SIZE_HUGE=96
 output_dir='./'
 
 while getopts ":o:" opt; do
@@ -20,21 +23,36 @@ while getopts ":o:" opt; do
 	esac
 done
 
-shift $(($OPTIND - 1))
+shift $(($OPTIND - 2))
 
 if [[ $# < 1 ]]; then
-	echo "USAGE: $0 [-o OUTPUT_DIR] image"
+	echo "USAGE: $0 [-o OUTPUT_DIR] asset image"
 	exit 1
 fi
 
-image=$1
-echo "Converting $image (output directory: $output_dir)"
+asset=$1
+image=$2
+echo "Converting $image to asset $asset (output directory: $output_dir)"
 
 # Check if output_dir is a directory
 if [ ! -d "$output_dir" ]; then
 	echo "Given output URI isn't a directory: $output_dir"
 	exit 1
 fi
+
+case "$asset" in
+	tab) $size_base = $TAB_SIZE_BASE
+		 $size_big = $TAB_SIZE_BIG
+		 $size_huge = $TAB_SIZE_HUGE
+		 ;;
+	bar) $size_base = $BAR_SIZE_BASE
+		 $size_big = $BAR_SIZE_BIG
+		 $size_huge = $BAR_SIZE_HUGE
+		 ;;
+	*) echo "Unrecognized asset $asset. Available options: tab, bar"
+	   exit 1
+	   ;;
+esac
 
 # Check image size
 for size in `sips -g pixelWidth -g pixelHeight $image | sed -n 's/.*pixel.*: \([0-9]*\)/\1/p'`; do
