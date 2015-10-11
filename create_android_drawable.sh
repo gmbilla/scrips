@@ -59,7 +59,7 @@ mkdir -p $dir_xxxhdpi
 # Check image size
 for side in `sips -g pixelWidth -g pixelHeight $image | sed -n 's/.*pixel.*: \([0-9]*\)/\1/p'`; do
 	if [[ $side -lt $size_xxxhdpi ]]; then
-		echo "Given image smallest side should be at least $size_huge px (currently $side px)"
+		echo "Given image smallest side should be at least $size_xxxhdpi px (currently $side px)"
 		exit 1
 	fi
 done
